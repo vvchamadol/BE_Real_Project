@@ -1,5 +1,6 @@
 const Booking = require('../Models/book')
 const bcrypt = require('bcryptjs')
+const Username = require('../Models/register.js')
 
 
 exports.book = async(req, res) => {
@@ -9,22 +10,42 @@ exports.book = async(req, res) => {
         //res.send(register)
 
         //Check duplicate
-        const { userId, packageId, waxId, status, date, time } = req.body
-        var book = await Booking.findOne({ time })
+        const { userId, packageId, waxAction, status, date, time, month, year, userName, userSurname } = req.body
+        var book = await Booking.findOne({ time, date })
 
 
         if(book) {
             return res.send('Booking Time Already Exists!!').status400
         }
 
+        let name = userName
+        let surname = userSurname
+
+        console.log('>>>>>20', name, surname)
         //Encrypt
+        var user = await Username.findOne({ _id:userId }) //update wax value > user
+        if( waxAction === "เปิดขวดใหม่" ) {
+            console.log('>>>>28', userId, user)
+        await Username.updateOne(
+            { _id : userId },
+            {  $set: {
+                waxId :'65d386eb52fba2cb3e29f5d1',
+                waxValue : 100
+            }}
+            )
+        }
+        
         book = new Booking({
             userId,
             packageId,
-            waxId,
+            waxAction,
             status,
             date,
-            time
+            time,
+            month,
+            year,
+            name,
+            surname 
         })
 
         //Save
@@ -48,12 +69,12 @@ exports.bookingUpdate = async(req, res) => {
 
         //Check duplicate
         
-        const { _id, userId, packageId, waxId, status, date, time } = req.body
+        const { _id, userId, packageId, waxId, status, date, time, month, year } = req.body
         console.log('_id', _id)
         var booking = await Booking.updateOne(
             { _id },
             {  $set: {
-                userId, packageId, waxId, status, date, time
+                userId, packageId, waxId, status, date, time, month, year
             }}
             )
 
@@ -72,7 +93,7 @@ console.log(err)
 exports.bookinginfo = async(req, res) => {
     try{ 
 console.log ("book!!");
-    const { id, userId, packageId, waxId, status, date, time } = req.query
+    const { id, userId, packageId, waxId, status, date, time, month, year } = req.query
 //console.log ("Object_id", name);
     var book = await Booking.findOne({ _id:id })
 console.log ("book", book);
@@ -82,7 +103,11 @@ console.log ("book", book);
             waxId : book.waxId,
             status : book.status,
             date : book.date,
-            time : book.time
+            time : book.time,
+            month : book.month,
+            year : book.year,
+            name : book.name,
+            surname : book.surname
         }
         res.send(result);
 console.log ('Booking info!!')

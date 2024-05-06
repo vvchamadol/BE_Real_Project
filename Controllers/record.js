@@ -1,5 +1,6 @@
 const Record = require('../Models/record')
 const bcrypt = require('bcryptjs')
+const Username = require('../Models/register.js')
 
 
 exports.record = async(req, res) => {
@@ -9,24 +10,47 @@ exports.record = async(req, res) => {
         //res.send(package)
 
         //Check duplicate
-        const { bookId, walkinId, status, total } = req.body
-        var record = await Record.findOne({ bookId })
+        const { userId, bookId, walkinId, status, total, name , surname , packageId, price, waxId, date, time, month } = req.body
+        console.log('>>>>13', req.body)
 
-        if(record) {
-            return res.send('Record is Already Exists!!').status400
-        }
+        var user = await Username.findOne({ _id:userId }) //update wax value > user
+        
+            console.log('>>>>28', userId, user)
+        await Username.updateOne(
+            { _id : userId },
+            {  $set: {
+                waxId :'65d386eb52fba2cb3e29f5d1',
+                waxValue : user.waxValue >0 ?user.waxValue - 20:user.waxValue 
+            }}
+            )
+        
+        // var record = await Record.findOne({ bookId })
+
+        // if(record) {
+        //     return res.send('Record is Already Exists!!').status400
+        // }
 
         //Encrypt
         record = new Record({
             bookId,
             walkinId,
-            status,
-            total
+            status : 'Finish',
+            total,
+            name,
+            surname,
+            packageId,
+            price,
+            waxId,
+            date,
+            time,
+            month
         })
       
+        
 
         //Save
-        await record.save()
+       let x = await record.save()
+        console.log('>>>40', x)
         res.send('Register Record Success!!')
 console.log(record)
 

@@ -11,7 +11,32 @@ const RecordSchema = mongoose.Schema(
     },
     total: {
         type:Number
-  }},
+    },
+    name:{
+          type:String
+    },
+    surname:{
+          type:String
+    },
+    packageId:{
+          type:String
+    },
+    price:{
+          type:String
+    },
+    waxId:{
+        type:String
+    },
+    date:{
+        type:String
+    },
+    time:{
+        type:String
+    },
+  month:{
+        type:String
+    },
+  },
 
   { timestamps: true }
 )

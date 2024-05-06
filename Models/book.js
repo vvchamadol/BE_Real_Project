@@ -2,11 +2,13 @@ const mongoose = require('mongoose')
 
 const BookSchema = mongoose.Schema(
   {
-    userId: String,   
+    userId: {
+      type:String   
+    },
     packageId:{
       type:String
     },
-    waxId:{
+    waxAction:{
         type:String
     },
     status:{
@@ -17,7 +19,20 @@ const BookSchema = mongoose.Schema(
     },
     time:{
       type:String
+    },
+    month:{
+      type:String
+    },
+    year:{
+      type:String
+    },
+    name:{
+      type:String
+    },
+    surname:{
+      type:String
     }
+    
     
   },
   { timestamps: true }

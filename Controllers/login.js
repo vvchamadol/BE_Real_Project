@@ -35,6 +35,7 @@ console.log(user)
         }else{
             return res.status(400).send('User not found!!')
         }
+        console.log('>>>>38', user)
         res.send(user)
         
     } catch (err) {

@@ -17,6 +17,12 @@ const RegisterSchema = mongoose.Schema(
     },
     role:{
       type: String
+    },
+    waxId:{
+      type: String
+    },
+    waxValue:{
+      type: Number
     }
     
   },

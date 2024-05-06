@@ -9,7 +9,7 @@ exports.register = async(req, res) => {
         //res.send(register)
 
         //Check duplicate
-        const { name, surname, tel, username, password, role } = req.body
+        const { name, surname, tel, username, password, role, waxValue } = req.body
         var user = await Username.findOne({ username })
 console.log(user)
 
@@ -25,7 +25,9 @@ console.log(user)
             tel,
             username,
             password,
-            role : 'user'
+            role : 'user',
+            waxValue
+            
         })
         user.password = await bcrypt.hash(password, salt)
 
@@ -45,7 +47,7 @@ console.log(err)
 exports.profile = async(req, res) => {
     try{ 
 console.log ("profile!!");
-    const { id, name, surname, tel, username, password } = req.query
+    const { id, name, surname, tel, username, password, waxValue } = req.query
 //console.log ("Object_id", name);
     var user = await Username.findOne({ _id:id })
 console.log ("user", user);
@@ -53,7 +55,8 @@ console.log ("user", user);
             name : user.name,
             surname : user.surname,
             tel : user.tel,
-            user : user.username
+            user : user.username,
+            waxValue : user.waxValue
         }
         res.send(result);
 console.log ('user info!!')
